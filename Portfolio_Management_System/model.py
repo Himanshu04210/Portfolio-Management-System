@@ -1,11 +1,9 @@
-
+# models.py
 from app import db
 
-
-
 class PortfolioManager(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100), nullable=False, autoincrement=True)
     status = db.Column(db.Boolean, default=True)
     role = db.Column(db.String(20), nullable=False)
     bio = db.Column(db.Text)
@@ -14,10 +12,8 @@ class PortfolioManager(db.Model):
     # One-to-Many relationship with projects
     projects = db.relationship('Project', backref='portfolio_manager', lazy=True)   
 
-
-
 class Project(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     project_name = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(20), nullable=False)
     start_date = db.Column(db.Date, nullable=False)
@@ -28,10 +24,9 @@ class Project(db.Model):
 
     # One-to-Many relationship with tasks
     tasks = db.relationship('Task', backref='project', lazy=True)
-    
-    
+
 class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(20), nullable=False)
 
@@ -40,11 +35,9 @@ class Task(db.Model):
 
     # One-to-Many relationship with resources
     resources = db.relationship('Resource', backref='task', lazy=True)
-    
-    
-    
+
 class Resource(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
 

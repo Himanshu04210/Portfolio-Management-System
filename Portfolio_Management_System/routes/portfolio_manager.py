@@ -1,9 +1,13 @@
+# routes/portfolio_manager.py
 from flask import Blueprint, jsonify, request
 from app import db
 from model import PortfolioManager
 
+# Create the blueprint object
 portfolio_manager_bp = Blueprint('portfolio_manager', __name__, url_prefix='/portfolio_manager')
 
+# Define your portfolio_manager routes and handlers here
+# For example:
 @portfolio_manager_bp.route('/managers', methods=['POST'])
 def create_portfolio_manager():
     data = request.get_json()
