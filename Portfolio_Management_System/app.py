@@ -128,6 +128,7 @@ def get_all_portfolio_managers():
 
 
 #Get the manager by Id
+
 @app.route('/managers/<int:portfolio_manager_id>', methods=['GET'])
 def get_portfolio_manager_by_id(portfolio_manager_id):
     portfolio_manager = PortfolioManager.query.get(portfolio_manager_id)
@@ -179,6 +180,8 @@ def get_all_projects():
         "end_date": p.end_date.isoformat() if p.end_date else None,
         "portfolio_manager_id": p.portfolio_manager_id
     } for p in projects])
+
+
 
 @app.route('/projects/<int:project_id>', methods=['GET'])
 def get_project_by_id(project_id):
