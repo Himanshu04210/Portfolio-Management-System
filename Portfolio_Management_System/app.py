@@ -77,18 +77,41 @@ class Resource(db.Model):
 #Create a new managers
 @app.route('/managers', methods=['POST'])
 def create_portfolio_manager():
-    data = request.get_json()
+    data = request.json
     name = data.get('name')
     status = data.get('status')
     role = data.get('role')
     bio = data.get('bio')
     start_date = data.get('start_date')
+    projects_data = data.get('projects')  # Assuming projects is a list of dictionaries
 
-    new_portfolio_manager = PortfolioManager(name=name, status=status, role=role, bio=bio, start_date=start_date)
-    db.session.add(new_portfolio_manager)
+    if not all([name, status, role, start_date, projects_data]):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    # Create the PortfolioManager instance
+    portfolio_manager = PortfolioManager(name=name, status=status, role=role, bio=bio, start_date=start_date)
+    
+    if projects_data is not None:
+        # Create or fetch the Project instances and associate them with the PortfolioManager
+        projects = []
+        for project_data in projects_data:
+            project_name = project_data.get('project_name')
+            status = project_data.get('status')
+            start_date = project_data.get('start_date')
+            end_date = project_data.get('end_date')
+            project = Project(project_name=project_name, status=status, start_date=start_date, end_date=end_date)
+            projects.append(project)
+            db.session.add(project)
+
+        # Assign the projects to the PortfolioManager
+        portfolio_manager.projects.extend(projects)
+
+    # Add the PortfolioManager to the database session and commit the changes
+    db.session.add(portfolio_manager)
     db.session.commit()
 
-    return jsonify({'message': 'Portfolio Manager created successfully'}), 201
+    return jsonify({"message": "Manager with Projects created successfully!"}), 201
+
 
 #Get all the manager
 @app.route('/managers', methods=['GET'])
