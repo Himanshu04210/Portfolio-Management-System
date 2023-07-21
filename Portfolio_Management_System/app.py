@@ -239,9 +239,6 @@ def create_resource():
     db.session.commit()
     return jsonify({"message": "Resource created successfully!"})
 
-# Define other CRUD methods for Resource using similar app.route decorators as above.
-
-
 
 
 
